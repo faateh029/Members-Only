@@ -29,6 +29,25 @@ export const signupController = async (req , res)=>{
 
 export const loginController = async (req , res)=>{
     const {email , password} = req.body;
-
-    
+    const validateUser = await User.findOne({email});
+    if(!validateUser){
+      return res.status(401).json({msg:"Invalid Credentials"});
+    }
+    const isPassValid = await bcrypt.compare(password , validateUser.password);
+    if(!isPassValid){
+      return res.status(401).json({msg:"Invalid Credentials"});
+    }
+    const accessToken =  jwt.sign(
+          {
+          user_id:validateUser._id ,
+          email:validateUser.email ,
+          role:validateUser.role
+          } , 
+          process.env.JWT_SECRET  , 
+          {expiresIn:"1h"}
+           );
+    res.status(201).json({
+        msg:"User logged in successfully",
+        token:accessToken
+    })
 }
