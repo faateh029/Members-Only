@@ -6,3 +6,5 @@ export const userRouter = new Router();
 userRouter.post('/join-club' , verifyToken, clubjoinController);
 
 userRouter.get('/all-users' ,verifyToken, isAdmin,allUsersController);
+
+userRouter.get('/get-details')

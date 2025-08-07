@@ -16,10 +16,3 @@ export const verifyToken = async (req , res , next)=>{
          return res.status(500).json({msg:"Internal Server Error"});   
     }
 }
-
-export const isAdmin = async (req,res,next)=>{
-    if(req.user.role==="admin"){
-       return next();
-    }
-    res.status(409).json({msg:"access denied"});
-}
