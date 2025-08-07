@@ -1,6 +1,7 @@
 import {User} from '../models/userModel.js';
 export const clubjoinController = async (req , res)=>{
   const {secretKey} = req.body ;
+
   if(!secretKey){
     return res.status(404).json({msg:"no secret key found"})
     }
@@ -11,3 +12,13 @@ export const clubjoinController = async (req , res)=>{
   }
  res.status(409).json({msg:"Access denied"});
 }
+
+
+export const allUsersController = async (req, res) => {
+    try {
+        const allUsers = await User.findAll(); 
+        res.status(200).json(allUsers);
+    } catch (error) {
+        res.status(500).json({ msg: "Error fetching users", error });
+    }
+};
