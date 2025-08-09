@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import {Message} from '../models/messageModel.js';
-import { User } from '../models/userModel';
+import { User } from '../models/userModel.js';
 export const club_join_controller = async(req ,res , next)=>{
     try {
      

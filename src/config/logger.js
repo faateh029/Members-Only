@@ -2,7 +2,7 @@ import winston from 'winston';
 const logger = winston.createLogger({
     level:"info",
     format:winston.format.combine(
-        winston.format.prettyprint(),
+        winston.format.prettyPrint(),
         winston.format.timestamp({format:'YYYY-MM-DD HH:mm:ss'}),
         winston.format.printf(({level , message , timestamp})=>{
           return `[${timestamp}] ${level.toUpperCase()}: ${message}`;   
@@ -13,4 +13,4 @@ const logger = winston.createLogger({
     
     })
 
-    export default logger;
+export default logger;
