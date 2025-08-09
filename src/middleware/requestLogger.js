@@ -4,4 +4,4 @@ import logger from '../config/logger.js';
     logger.info(`${req.method} ${req.originalUrl}`)
     next();
 }
-export default requestLogger;
+export default requestLogger; 
