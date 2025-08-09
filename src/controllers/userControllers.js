@@ -5,29 +5,18 @@ export const club_join_controller = async(req ,res , next)=>{
     try {
      
     const {secret} = req.body;
-      //  let token;
-      //  const authHeader = req.headers.authorization || req.headers.Authorization;
-      //   if(!authHeader){
-      //       const error = new Error("Token not found")
-      //       throw error;
-      //   }
-      //  if(authHeader && authHeader.startsWith("Bearer")){
-      //    token = authHeader.split(" ")[1];
-      //  }
-      //  const decodedToken = await jwt.verify(token , process.env.JWT_SECRET  )
-      //  req.user = decodedToken;
        if(req.user.role==="admin"||req.user.role==="member"){
           const error = new Error("No need to upgrade")
           throw error;
        }
          if(secret===process.env.MEMBER_PASSCODE){
-            const user = User.findOne({ _id: req.user._id });
-             if(!user){
-               const error = new Error("User not found")
-               throw error;
-              }
-            user.role= "member"
-           await user.save();
+            await User.findByIdAndUpdate( req.user._id ,
+            {role:"member"},
+            {
+               new: true,
+               runValidators: true
+            }
+            );
           return res.status(200).json({msg:"role updated successfully"})            
        }
        res.status(409).json({msg:"Access not given"})    
