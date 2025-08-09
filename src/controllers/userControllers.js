@@ -22,3 +22,7 @@ export const allUsersController = async (req, res) => {
         res.status(500).json({ msg: "Error fetching users", error });
     }
 };
+
+export const getDetailsController = async (req,res)=>{
+     return res.status(200).json({msg:"take details"});
+}
