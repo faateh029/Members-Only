@@ -60,3 +60,32 @@ export const create_message_controller =async (req,res)=>{
          await newMessage.save();
          res.status(201).json({msg:"Msg created successfully"})
 }
+
+export const get_messages_controller = async (req, res, next) => {
+  try {
+    let messages;
+
+    // Check the user's role from the token verification middleware
+    if (req.user.role === 'member' || req.user.role === 'admin') {
+      messages = await Message.find({});
+    } else {
+      messages = await Message.find({}).select('title text');
+    }
+    res.status(200).json(messages);
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const delete_messages_controller = async (req,res)=>{
+   const msgId = req.params.id;
+   const message  = await Message.findById(msgId);
+   if(!message){
+      const error  = new Error("Wrong msg id")
+      throw error;
+   }
+   await Message.deleteOne({ _id: msgId });
+   res.status(204).json({msg:"msg deleted successfully"})
+}
