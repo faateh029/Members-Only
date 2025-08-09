@@ -1,7 +1,7 @@
 import express from 'express';
 import errorHandler from './middleware/errorHandler.js';
 import dotenv from 'dotenv';
-import logger from './config/logger.js';
+import requestLogger from './middleware/requestLogger.js';
 import { dbConnect } from './config/dbConnect.js';
 dotenv.config();
 dbConnect();
