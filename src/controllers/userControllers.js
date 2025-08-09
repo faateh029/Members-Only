@@ -58,5 +58,5 @@ export const create_message_controller =async (req,res)=>{
             text:text
          })
          await newMessage.save();
-         res.status(200).json({msg:"Msg created successfully"})
+         res.status(201).json({msg:"Msg created successfully"})
 }
