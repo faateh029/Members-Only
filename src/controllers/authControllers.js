@@ -34,7 +34,7 @@ export const signupController = async (req , res , next)=>{
 
     const accessToken = jwt.sign(
     {
-     user_id:newUser._id 
+    user_id:newUser._id 
    , email:newUser.email 
    , role:newUser.role
     }

@@ -3,14 +3,15 @@ import {Message} from '../models/messageModel.js';
 import { User } from '../models/userModel.js';
 export const club_join_controller = async(req ,res , next)=>{
     try {
-     
+     console.log(req.user);
     const {secret} = req.body;
        if(req.user.role==="admin"||req.user.role==="member"){
           const error = new Error("No need to upgrade")
           throw error;
        }
          if(secret===process.env.MEMBER_PASSCODE){
-            await User.findByIdAndUpdate( req.user._id ,
+           // console.log(req.user._id);
+           const updateUser=  await User.findByIdAndUpdate( req.user.user_id ,
             {role:"member"},
             {
                new: true,
