@@ -2,8 +2,9 @@ import {User} from '../models/userModel.js';
 import logger from '../config/logger.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-export const signupController = async (req , res)=>{
-   const {fullname,email,password,confirmPassword , secretKey} = req.body;
+export const signupController = async (req , res , next)=>{
+  try {
+   const {fullname,email,password,confirmPassword ,secretKey} = req.body;
    if(password!=confirmPassword){
     //return res.status(400).json({msg:"passwords do not match"});
     const error = new Error("Passwords do not match");
@@ -49,6 +50,10 @@ export const signupController = async (req , res)=>{
               email:email
              }
       })  
+    
+  } catch (error) {
+      next(error); 
+  }
    
 }
 
@@ -59,7 +64,7 @@ export const loginController = async (req , res)=>{
         const error = new Error("invalid credentials");
     throw error;
     }
-    const isPassValid = await bcrypt.compare(password , validateUser.password);
+    const isPassValid = await bcryptjs.compare(password , validateUser.password);
     if(!isPassValid){
        const error = new Error("invalid credentials");
     throw error;

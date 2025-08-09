@@ -5,17 +5,17 @@ export const club_join_controller = async(req ,res , next)=>{
     try {
      
     const {secret} = req.body;
-       let token;
-       const authHeader = req.headers.authorization || req.headers.Authorization;
-        if(!authHeader){
-            const error = new Error("Token not found")
-            throw error;
-        }
-       if(authHeader && authHeader.startsWith("Bearer")){
-         token = authHeader.split(" ")[1];
-       }
-       const decodedToken = await jwt.verify(token , process.env.JWT_SECRET  )
-       req.user = decodedToken;
+      //  let token;
+      //  const authHeader = req.headers.authorization || req.headers.Authorization;
+      //   if(!authHeader){
+      //       const error = new Error("Token not found")
+      //       throw error;
+      //   }
+      //  if(authHeader && authHeader.startsWith("Bearer")){
+      //    token = authHeader.split(" ")[1];
+      //  }
+      //  const decodedToken = await jwt.verify(token , process.env.JWT_SECRET  )
+      //  req.user = decodedToken;
        if(req.user.role==="admin"||req.user.role==="member"){
           const error = new Error("No need to upgrade")
           throw error;
