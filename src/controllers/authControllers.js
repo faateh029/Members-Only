@@ -1,14 +1,19 @@
 import {User} from '../models/userModel.js';
+import logger from '../config/logger.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 export const signupController = async (req , res)=>{
    const {fullname,email,password,confirmPassword , secretKey} = req.body;
    if(password!=confirmPassword){
-    return res.status(400).json({msg:"passwords do not match"});
+    //return res.status(400).json({msg:"passwords do not match"});
+    const error = new Error("Passwords do not match");
+    throw error;
    }
    const validateEmail = await User.findOne({email});
    if(validateEmail){
-    return res.status(409).json({msg:"Email already in use"});
+    //return res.status(409).json({msg:"Email already in use"});
+     const error = new Error("email already in use");
+    throw error;
    }
    const hashPass= await bcryptjs.hash(password , 10);
    
@@ -51,11 +56,13 @@ export const loginController = async (req , res)=>{
     const {email , password} = req.body;
     const validateUser = await User.findOne({email});
     if(!validateUser){
-      return res.status(401).json({msg:"Invalid Credentials"});
+        const error = new Error("invalid credentials");
+    throw error;
     }
     const isPassValid = await bcrypt.compare(password , validateUser.password);
     if(!isPassValid){
-      return res.status(401).json({msg:"Invalid Credentials"});
+       const error = new Error("invalid credentials");
+    throw error;
     }
     const accessToken =  jwt.sign(
           {

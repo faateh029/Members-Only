@@ -5,7 +5,8 @@ export const verifyToken = async (req , res , next)=>{
     const headerToken = req.headers.authorization ||req.headers.Authorization;
     let accessToken ;
     if(!headerToken){
-        return res.status(404).json({msg:"token not found"});
+        const error = new Error("token not found")
+          throw error;
     }
     if(headerToken&&headerToken.startsWith("Bearer")){
          accessToken = headerToken.split(" ")[1];
@@ -14,6 +15,6 @@ export const verifyToken = async (req , res , next)=>{
     req.user = decodedToken;
     next();   
     } catch (error) {
-         return res.status(500).json({msg:"Internal Server Error"});   
+         next(error);   
     }
 }
