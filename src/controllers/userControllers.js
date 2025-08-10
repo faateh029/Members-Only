@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken';
+import logger from '../config/logger.js';
 import {Message} from '../models/messageModel.js';
 import { User } from '../models/userModel.js';
 export const club_join_controller = async(req ,res , next)=>{
     try {
-     console.log(req.user);
+    // console.log(req.user);
     const {secret} = req.body;
        if(req.user.role==="admin"||req.user.role==="member"){
           const error = new Error("No need to upgrade")
@@ -18,7 +19,18 @@ export const club_join_controller = async(req ,res , next)=>{
                runValidators: true
             }
             );
-          return res.status(200).json({msg:"role updated successfully"})            
+                // Generate a new token with the updated role
+        const newToken = jwt.sign(
+            { user_id: updatedUser._id, email:updateUser.email ,role: updatedUser.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.status(200).json({
+            msg: "You have successfully joined the club!",
+            user: updatedUser,
+            token: newToken // Send the new token back to the client
+        })        
        }
        res.status(409).json({msg:"Access not given"})    
     } catch (error) {

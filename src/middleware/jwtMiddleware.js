@@ -13,9 +13,9 @@ export const verifyToken = async (req , res , next)=>{
     }
     const decodedToken= jwt.verify(accessToken,process.env.JWT_SECRET
     );
-    console.log(decodedToken);
+    //console.log(decodedToken);
     req.user = decodedToken;
-    console.log(req.user._id);
+   // console.log(req.user._id);
 
     next();   
     } catch (error) {
